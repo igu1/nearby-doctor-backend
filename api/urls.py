@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import (
+    DoctorListByLocationView,
     DoctorListCreateView,
     DoctorRetrieveUpdateDestroyView,
     SpecializationListCreateView,
@@ -9,6 +10,11 @@ from .views import (
 
 urlpatterns = [
     path("doctors/", DoctorListCreateView.as_view(), name="doctor-list-create"),
+    path(
+        "doctors/location/",
+        DoctorListByLocationView.as_view(),
+        name="doctor-list-by-location",
+    ),
     path(
         "doctors/<int:pk>/",
         DoctorRetrieveUpdateDestroyView.as_view(),
