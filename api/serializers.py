@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from .models import Doctor, Specialization
+from .models import Appointment, Doctor, Specialization
+
+
+class AppointmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Appointment
+        fields = "__all__"
 
 
 class SpecializationSerializer(serializers.ModelSerializer):
@@ -9,6 +15,7 @@ class SpecializationSerializer(serializers.ModelSerializer):
 
 
 class DoctorSerializer(serializers.ModelSerializer):
+    appointments = AppointmentSerializer(many=True, read_only=True)
     specialization = SpecializationSerializer(read_only=True)
     specialization_id = serializers.PrimaryKeyRelatedField(
         queryset=Specialization.objects.all(), source="specialization", write_only=True
