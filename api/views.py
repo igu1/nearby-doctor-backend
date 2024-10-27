@@ -1,16 +1,34 @@
-from datetime import datetime
+from rest_framework import generics
+from .models import Doctor, Specialization
+from .serializers import (
+    DoctorSerializer,
+    SpecializationSerializer,
+    DoctorsOfSpecializationSerializer,
+)
 
-from django.http import HttpResponse
+
+class DoctorListCreateView(generics.ListCreateAPIView):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
 
 
-def index(request):
-    now = datetime.now()
-    html = f'''
-    <html>
-        <body>
-            <h1>Hello from Vercel!</h1>
-            <p>The current time is { now }.</p>
-        </body>
-    </html>
-    '''
-    return HttpResponse(html)
+class DoctorRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Doctor.objects.all()
+    serializer_class = DoctorSerializer
+
+
+class SpecializationListCreateView(generics.ListCreateAPIView):
+    queryset = Specialization.objects.all()
+    serializer_class = SpecializationSerializer
+
+
+class SpecializationRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Specialization.objects.all()
+    serializer_class = SpecializationSerializer
+
+
+class DoctorListBySpecializationView(generics.RetrieveAPIView):
+    queryset = Specialization.objects.all()
+    serializer_class = DoctorsOfSpecializationSerializer
+    lookup_field = 'pk'
+    lookup_url_kwarg = 'specialization_id'
